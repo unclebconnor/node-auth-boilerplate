@@ -39,7 +39,7 @@ module.exports = function(app, passport) {
 	// protected so you have to be logged in to visit
 	// route middleware will verify this (the isLoggedIn function)
 	app.get('/profile', isLoggedIn, function(req, res) {
-		
+
 		res.render('profile.ejs', {
 			user: req.user //get the user from session and pass to template
 		});
@@ -56,7 +56,7 @@ module.exports = function(app, passport) {
 function isLoggedIn(req, res, next) {
 	// if user is authenticated in the session, continue
 	if(req.isAuthenticated()){
-		return next;
+		return next();
 	} // if not, redirect to home page
 	else{
 		res.redirect('/');
