@@ -1,5 +1,9 @@
 var LocalStrategy = require('passport-local').Strategy;
-var User = require('../app/models/user'); //load user model
+var FacebookStrategy = require('passport-facebook').Strategy;
+var TwitterStrategy = require('passport-twitter').Strategy;
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var User = require('../app/models/user'); // load user model
+var configAuth = require('./auth'); // load the auth variables
 
 //expose the function to the app by using module.exports
 module.exports = function(passport) {
@@ -19,6 +23,146 @@ module.exports = function(passport) {
 			done(err, user);
 		});
 	});
+
+	// ============= GOOGLE =============
+	passport.use(new GoogleStrategy({
+
+        clientID        : configAuth.googleAuth.clientID,
+        clientSecret    : configAuth.googleAuth.clientSecret,
+        callbackURL     : configAuth.googleAuth.callbackURL,
+
+    },
+    function(token, refreshToken, profile, done) {
+
+        // make the code asynchronous
+        // User.findOne won't fire until we have all our data back from Google
+        process.nextTick(function() {
+
+            // try to find the user based on their google id
+            User.findOne({ 'google.id' : profile.id }, function(err, user) {
+                console.log("#####IN PASSPORT#####",user, profile)
+                if (err)
+                    return done(err);
+
+                if (user) {
+
+                    // if a user is found, log them in
+                    return done(null, user);
+                } else {
+                    // if the user isnt in our database, create a new user
+                    var newUser          = new User();
+
+                    // set all of the relevant information
+                    newUser.google.id    = profile.id;
+                    newUser.google.token = token;
+                    newUser.google.name  = profile.displayName;
+                    newUser.google.email = profile.emails[0].value; // pull the first email
+
+                    // save the user
+                    newUser.save(function(err) {
+                        if (err)
+                            throw err;
+                        return done(null, newUser);
+                    });
+                }
+            });
+        });
+
+    }));
+
+	// ============= TWITTER =============
+
+	passport.use(new TwitterStrategy({
+		consumerKey     : configAuth.twitterAuth.consumerKey,
+        consumerSecret  : configAuth.twitterAuth.consumerSecret,
+        callbackURL     : configAuth.twitterAuth.callbackURL
+	},
+	function(token, tokenSecret, profile, done){
+		// asynchronous
+		process.nextTick(function(){
+			User.findOne({ 'twitter.id' : profile.id }, function(err, user){
+
+				//if there's an error, return it
+				if(err){
+					return done(err);
+				}
+
+				if(user){
+					return done(null, user); //user found, return that user
+				} else {
+					//if there's no user, create one
+					var newUser = new User();
+
+					// set all of the user data that we need
+                    newUser.twitter.id          = profile.id;
+                    newUser.twitter.token       = token;
+                    newUser.twitter.username    = profile.username;
+                    newUser.twitter.displayName = profile.displayName;
+
+                    // save our user into the database
+                    newUser.save(function(err) {
+                        if (err)
+                            throw err;
+                        return done(null, newUser);
+                    });
+				}
+			});
+		});
+	}));
+
+	// ============= FACEBOOK =============
+
+	passport.use(new FacebookStrategy({
+		// pull in our app id and secret from our auth.js file
+        clientID        : configAuth.facebookAuth.clientID,
+        clientSecret    : configAuth.facebookAuth.clientSecret,
+        callbackURL     : configAuth.facebookAuth.callbackURL
+	},
+
+		// facebook will send back the token and profile
+		function(token, refreshToken, profile, done){
+			// asynchronous
+			process.nextTick(function(){
+
+				// find the user in the database based on FB ID
+				User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+					console.log(user, profile)
+					// if there is an error, stop everything and return that
+					if(err){
+						return done(err);
+					}
+
+					// if user is found, log them in
+					if(user){
+						return done(null, user);
+					} else {
+						// if no user is found, create them
+						var newUser = new User();
+
+						// set all of the FB info in our user model
+						newUser.facebook.id = profile.id;
+						newUser.facebook.token = token;
+						newUser.facebook.name = profile.displayName;
+						if(profile.emails){
+							newUser.facebook.email = profile.emails[0].value;
+						}
+						
+						// save user to DB
+						newUser.save(function(err){
+							console.log(err)
+							if(err){
+								throw err;
+							} else{
+								return done(null, newUser)
+							}
+							
+						})
+					}
+				})
+			})
+		}
+	));
+
 
 	// ============= LOCAL SIGNUP =============
 	// we are using namded strategies since we have one for a signup

@@ -39,11 +39,46 @@ module.exports = function(app, passport) {
 	// protected so you have to be logged in to visit
 	// route middleware will verify this (the isLoggedIn function)
 	app.get('/profile', isLoggedIn, function(req, res) {
-
 		res.render('profile.ejs', {
 			user: req.user //get the user from session and pass to template
 		});
 	});
+
+	// ============= FACEBOOK =============
+	app.get('/auth/facebook', passport.authenticate('facebook', { 
+      scope : ['public_profile', 'email']
+    }));
+
+    // handle the callback after facebook has authenticated the user
+    app.get('/auth/facebook/callback',
+        passport.authenticate('facebook', {
+            successRedirect : '/profile',
+            failureRedirect : '/'
+        })
+    );
+
+    // ============= TWITTER =============
+    app.get('/auth/twitter', passport.authenticate('twitter'));
+
+    // handle the callback after twitter has authenticated
+    app.get('/auth/twitter/callback',
+    	passport.authenticate('twitter', {
+    		successRedirect: '/profile',
+    		failureRedirect: '/'
+    	})
+    );
+
+    // ============= GOOGLE =============
+    app.get('/auth/google', passport.authenticate('google', 
+    	{ scope : ['profile', 'email'] }
+    ));
+
+    app.get('/auth/google/callback',
+    	passport.authenticate('google', {
+    		successRedirect: '/profile',
+    		failureRedirect: '/'
+    	})
+    );
 
 	// ============= LOGOUT =============
 	app.get('/logout', function(req, res) {
