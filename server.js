@@ -1,9 +1,9 @@
 
 // setup ================================================
+require('dotenv').config();
 var express = require('express');
 var app = express();
 var port = process.env.PORT || 3000;
-var dotenv = require('dotenv');
 // var Sequelize = require('sequelize');
 var mongoose = require('mongoose');
 var passport = require('passport');
