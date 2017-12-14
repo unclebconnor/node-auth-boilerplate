@@ -11,7 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt-nodejs": "latest",
+    "bcrypt": "latest",
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.2",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.3",
@@ -27,9 +28,9 @@
     "passport-google-oauth": "^1.0.0",
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.4",
-    "pg": "^6.4.2",
+    "pg": "^6.4.1",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^4.27.0",
+    "sequelize": "^3.30.4",
     "sequelize-cli": "^3.2.0"
   },
   "repository": {

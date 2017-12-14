@@ -1,8 +1,9 @@
+var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-var User = require('../app/models/user'); // load user model
+var db = require('../models'); // load user model
 var configAuth = require('./auth'); // load the auth variables
 
 //expose the function to the app by using module.exports
@@ -19,7 +20,8 @@ module.exports = function(passport) {
 
 	// used to deserialize the user
 	passport.deserializeUser(function(id, done){
-		User.findById(id, function(err, user){
+		console.log("IS THIS REALLY HAPPENING?")
+		db.user.findById(id, function(err, user){
 			done(err, user);
 		});
 	});
@@ -40,7 +42,6 @@ module.exports = function(passport) {
 
             // try to find the user based on their google id
             User.findOne({ 'google.id' : profile.id }, function(err, user) {
-                console.log("#####IN PASSPORT#####",user, profile)
                 if (err)
                     return done(err);
 
@@ -126,7 +127,7 @@ module.exports = function(passport) {
 
 				// find the user in the database based on FB ID
 				User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
-					console.log(user, profile)
+					
 					// if there is an error, stop everything and return that
 					if(err){
 						return done(err);
@@ -177,31 +178,20 @@ module.exports = function(passport) {
 		// asynchronous
 		// User.findOne won't fire unless data is sent back
 		process.nextTick(function(){
-			// find a user whose email is the same as the form's email
-			// checking to see if the user trying to login already exists
-			User.findOne({ 'local.email' : email }, function(err, user) {
-				// if there are errors, return the error
-				if (err){ return done(err); }
-				if (user){
-					return done(null, false, req.flash('signupMessage', 'That email is already taken.'))
-				} else {
-					// if there is no user with that email
-					// create the user
-					var newUser = new User();
-
-					// set the user's local credentials
-					newUser.local.email = email;
-					newUser.local.password = newUser.generateHash(password);
-
-					// save the user
-					newUser.save(function(err){
-						if (err){
-							throw err;
-						}
-						return done(null, newUser);
-					});
+		// 	// find a user whose email is the same as the form's email
+		// 	// checking to see if the user trying to login already exists
+			db.user.findOrCreate({
+				where: { 
+					'email' : req.body.email 
 				}
-			}); //end User.findOne
+			})
+			.spread((user, created) => {
+				console.log("#####USER########",created)
+				if (created){ return done(user); }
+				if (!created){
+					return done(null, false, req.flash('signupMessage', 'That email is already taken.'))
+				} 
+			});
 		}); // end of process.nextTick
 	})); //end of localstrategy and passport.use
 
@@ -216,24 +206,25 @@ module.exports = function(passport) {
     function(req, email, password, done) { // callback with email and password from our form
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
-        User.findOne({ 'local.email' :  email }, function(err, user) {
-            // if there are any errors, return the error before anything else
-            if (err){
-                return done(err);
-            }
+        User.findOne({ where: { 'email' :  email }})
+        	.then((user) => {
+        	    // if there are any errors, return the error before anything else
+        	    if (user===null){
+        	        return done("error");
+        	    }
 
-            // if no user is found, return the message
-            if (!user){
-                return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
-            }
+        	    // if no user is found, return the message
+        	    if (!user){
+        	        return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
+        	    }
 
-            // if the user is found but the password is wrong
-            if (!user.validPassword(password)){
-                return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
-            }
+        	    // if the user is found but the password is wrong
+        	    if (!user.validPassword(password)){
+        	        return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
+        	    }
 
-            // all is well, return successful user
-            return done(null, user);
+        	    // all is well, return successful user
+        	    return done(null, user);
         }); // end User.findOne
     })); // end of localstrategy and passport.use
 }

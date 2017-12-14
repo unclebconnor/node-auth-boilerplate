@@ -14,10 +14,10 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
-var configDB = require('./config/database.js');
+// var configDB = require('./config/database.js');
 
-// configuration ========================================
-mongoose.connect(configDB.url);  //connect to database (Mongo temporarily)
+// // configuration ========================================
+// mongoose.connect(configDB.url);  //connect to database (Mongo temporarily)
 
 require('./config/passport')(passport);
 
