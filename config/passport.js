@@ -20,7 +20,6 @@ module.exports = function(passport) {
 
 	// used to deserialize the user
 	passport.deserializeUser(function(id, done){
-		console.log("IS THIS REALLY HAPPENING?")
 		db.user.findById(id, function(err, user){
 			done(err, user);
 		});
@@ -186,8 +185,8 @@ module.exports = function(passport) {
 				}
 			})
 			.spread((user, created) => {
-				console.log("#####USER########",created)
-				if (created){ return done(user); }
+				console.log('#####CREATED##',created)
+				if (created){ return done(null, user); }
 				if (!created){
 					return done(null, false, req.flash('signupMessage', 'That email is already taken.'))
 				} 
@@ -206,7 +205,7 @@ module.exports = function(passport) {
     function(req, email, password, done) { // callback with email and password from our form
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
-        User.findOne({ where: { 'email' :  email }})
+        db.user.findOne({ where: { 'email' :  email }})
         	.then((user) => {
         	    // if there are any errors, return the error before anything else
         	    if (user===null){
