@@ -1,4 +1,5 @@
 var db = require('../models');
+var passport = require('passport');
 module.exports = function(app, passport) {
 	
 
@@ -39,7 +40,6 @@ module.exports = function(app, passport) {
 	// protected so you have to be logged in to visit
 	// route middleware will verify this (the isLoggedIn function)
 	app.get('/profile', isLoggedIn, function(req, res) {
-		console.log("####Profile###");
 		res.render('profile.ejs', {
 			user: req.user //get the user from session and pass to template
 		});
@@ -90,7 +90,6 @@ module.exports = function(app, passport) {
 
 // route middleware to make sure a user is logged in 
 function isLoggedIn(req, res, next) {
-	console.log("####REQ###", req.user);
 	// if user is authenticated in the session, continue
 	if(true){
 		return next();

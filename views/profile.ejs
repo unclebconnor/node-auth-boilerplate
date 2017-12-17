@@ -23,9 +23,9 @@
             <div class="well">
                 <h3><span class="fa fa-user"></span> Local</h3>
                     <p>
-                        <strong>id</strong>: <%= user._id %><br>
-                        <strong>email</strong>: <%= user.local.email %><br>
-                        <strong>password</strong>: <%= user.local.password %>
+                        <strong>id</strong>: <%= user.id %><br>
+                        <strong>email</strong>: <%= user.email %><br>
+                        <strong>password</strong>: <%= user.password %>
                     </p>
             </div>
         </div>
@@ -34,11 +34,10 @@
             <div class="well">
                 <h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook</h3>
                 <p>
-                    <strong>id</strong>: <%= user._id %><br>
-                    <strong>facebook id</strong>: <%= user.facebook.id %><br>
-                    <strong>token</strong>: <%= user.facebook.token %><br>
-                    <strong>email</strong>: <%= user.facebook.email %><br>
-                    <strong>name</strong>: <%= user.facebook.name %>
+                    <strong>facebook id</strong>: <%= user.facebookId %><br>
+                    <strong>token</strong>: <%= user.facebookToken %><br>
+                    <strong>email</strong>: <%= user.facebookEmail %><br>
+                    <strong>name</strong>: <%= user.facebookName %>
                 </p>
             </div>
         </div>
@@ -49,10 +48,10 @@
             <div class="well">
                 <h3 class="text-info"><span class="fa fa-twitter"></span> Twitter</h3>
                     <p>
-                        <strong>id</strong>: <%= user.twitter.id %><br>
-                        <strong>token</strong>: <%= user.twitter.token %><br>
-                        <strong>username</strong>: <%= user.twitter.username %><br>
-                        <strong>displayName</strong>: <%= user.twitter.displayName %>
+                        <strong>id</strong>: <%= user.twitterId %><br>
+                        <strong>token</strong>: <%= user.twitterToken %><br>
+                        <strong>username</strong>: <%= user.twitterUsername %><br>
+                        <strong>displayName</strong>: <%= user.twitterDisplayName %>
                     </p>
             </div>
         </div>
@@ -61,10 +60,10 @@
             <div class="well">
                 <h3 class="text-danger"><span class="fa fa-google-plus"></span> Google</h3>
                 <p>
-                    <strong>id</strong>: <%= user.google.id %><br>
-                    <strong>token</strong>: <%= user.google.token %><br>
-                    <strong>email</strong>: <%= user.google.email %><br>
-                    <strong>name</strong>: <%= user.google.name %>
+                    <strong>id</strong>: <%= user.googleId %><br>
+                    <strong>token</strong>: <%= user.googleToken %><br>
+                    <strong>email</strong>: <%= user.googleEmail %><br>
+                    <strong>name</strong>: <%= user.googleName %>
                 </p>
             </div>
         </div>
