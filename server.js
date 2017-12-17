@@ -3,9 +3,9 @@
 require('dotenv').config();
 var express = require('express');
 var app = express();
-var port = process.env.PORT || 3000;
-// var Sequelize = require('sequelize');
-// var mongoose = require('mongoose');
+var path = require('path');
+var port = process.env.PORT || 8080;
+
 var passport = require('passport');
 var flash = require('connect-flash');
 
@@ -14,10 +14,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
-// var configDB = require('./config/database.js');
-
-// // configuration ========================================
-// mongoose.connect(configDB.url);  //connect to database (Mongo temporarily)
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 require('./config/passport')(passport);
 

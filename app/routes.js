@@ -1,5 +1,6 @@
 var db = require('../models');
 var passport = require('passport');
+var path = require('path');
 module.exports = function(app, passport) {
 	
 
@@ -39,8 +40,14 @@ module.exports = function(app, passport) {
 	// ============= PROFILE SECTION =============
 	// protected so you have to be logged in to visit
 	// route middleware will verify this (the isLoggedIn function)
+	// app.get('/profile', isLoggedIn, function(req, res) {
+	// 	res.render('profile.ejs', {
+	// 		user: req.user //get the user from session and pass to template
+	// 	});
+	// });
+
 	app.get('/profile', isLoggedIn, function(req, res) {
-		res.render('profile.ejs', {
+		res.send('profile.ejs', {
 			user: req.user //get the user from session and pass to template
 		});
 	});
@@ -85,6 +92,20 @@ module.exports = function(app, passport) {
 	app.get('/logout', function(req, res) {
 		req.logout();
 		res.redirect('/');
+	});
+
+	// ============ JERK =============
+	app.get('/jerk', function(req, res) {
+		var jerk = {
+			yerajerk: "yerajerk"
+		}
+		res.send(jerk);
+	});
+
+	// The "catchall" handler: for any request that doesn't
+	// match one above, send back React's index.html file.
+	app.get('*', (req, res) => {
+	  res.sendFile(path.join(__dirname+'/client/build/index.html'));
 	});
 };
 
