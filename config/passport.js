@@ -127,38 +127,26 @@ module.exports = function(passport) {
 			process.nextTick(function(){
 
 				// find the user in the database based on FB ID
-				User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
-					
-					// if there is an error, stop everything and return that
-					if(err){
-						return done(err);
-					}
-
+				db.user.findOne({where: { facebookId : profile.id }})
+				.then((user) => {
 					// if user is found, log them in
 					if(user){
 						return done(null, user);
 					} else {
-						// if no user is found, create them
-						var newUser = new User();
-
-						// set all of the FB info in our user model
-						newUser.facebook.id = profile.id;
-						newUser.facebook.token = token;
-						newUser.facebook.name = profile.displayName;
-						if(profile.emails){
-							newUser.facebook.email = profile.emails[0].value;
-						}
-						
-						// save user to DB
-						newUser.save(function(err){
-							console.log(err)
-							if(err){
-								throw err;
-							} else{
-								return done(null, newUser)
-							}
-							
+						db.user.create({
+							facebookId: profile.id,
+							facebookToken: token,
+							facebookName: profile.displayName,
+							// facebookEmail: profile.emails[0].value
 						})
+						.then(function(newUser, created) {
+                    	    if (!newUser) {
+                    	        return done(null, false);
+                    	    }
+                    	    if (newUser) {
+                    	        return done(null, newUser);
+                    	    }
+                    	});
 					}
 				})
 			})
@@ -214,15 +202,12 @@ module.exports = function(passport) {
         // we are checking to see if the user trying to login already exists
         db.user.findOne({ where: { 'email' :  email }})
         	.then((user) => {
-        	    // if there are any errors, return the error before anything else
         	    if (user===null){
         	        return done("error");
         	    }
-        	    // if no user is found, return the message
         	    if (!user){
         	        return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
         	    }
-        	    // if the user is found but the password is wrong
         	    if (!user.validPassword(password)){
         	        return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
         	    }
