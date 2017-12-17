@@ -82,31 +82,26 @@ module.exports = function(passport) {
 	function(token, tokenSecret, profile, done){
 		// asynchronous
 		process.nextTick(function(){
-			User.findOne({ 'twitter.id' : profile.id }, function(err, user){
-
-				//if there's an error, return it
-				if(err){
-					return done(err);
-				}
+			db.user.findOne({where: { twitterId : profile.id }})
+			.then((user) => {
 
 				if(user){
 					return done(null, user); //user found, return that user
 				} else {
-					//if there's no user, create one
-					var newUser = new User();
-
-					// set all of the user data that we need
-                    newUser.twitter.id          = profile.id;
-                    newUser.twitter.token       = token;
-                    newUser.twitter.username    = profile.username;
-                    newUser.twitter.displayName = profile.displayName;
-
-                    // save our user into the database
-                    newUser.save(function(err) {
-                        if (err)
-                            throw err;
-                        return done(null, newUser);
-                    });
+					db.user.create({
+							twitterId: profile.id,
+							twitterToken: token,
+							twitterUsername: profile.username,
+							twitterDisplayName: profile.displayName
+						})
+						.then(function(newUser, created) {
+                    	    if (!newUser) {
+                    	        return done(null, false);
+                    	    }
+                    	    if (newUser) {
+                    	        return done(null, newUser);
+                    	    }
+                    	});
 				}
 			});
 		});
@@ -137,7 +132,6 @@ module.exports = function(passport) {
 							facebookId: profile.id,
 							facebookToken: token,
 							facebookName: profile.displayName,
-							// facebookEmail: profile.emails[0].value
 						})
 						.then(function(newUser, created) {
                     	    if (!newUser) {
