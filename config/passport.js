@@ -42,29 +42,26 @@ module.exports = function(passport) {
         process.nextTick(function() {
 
             // try to find the user based on their google id
-            User.findOne({ 'google.id' : profile.id }, function(err, user) {
-                if (err)
-                    return done(err);
+            db.user.findOne({where: { googleId : profile.id }})
+            .then( (user) => {
 
                 if (user) {
-
                     // if a user is found, log them in
                     return done(null, user);
                 } else {
-                    // if the user isnt in our database, create a new user
-                    var newUser          = new User();
-
-                    // set all of the relevant information
-                    newUser.google.id    = profile.id;
-                    newUser.google.token = token;
-                    newUser.google.name  = profile.displayName;
-                    newUser.google.email = profile.emails[0].value; // pull the first email
-
-                    // save the user
-                    newUser.save(function(err) {
-                        if (err)
-                            throw err;
-                        return done(null, newUser);
+                	db.user.create({
+						googleId: profile.id,
+						googleToken: token,
+						googleName: profile.displayName,
+						googleEmail: profile.emails[0].value
+					})
+					.then(function(newUser, created) {
+                        if (!newUser) {
+                            return done(null, false);
+                        }
+                        if (newUser) {
+                            return done(null, newUser);
+                        }
                     });
                 }
             });
@@ -89,19 +86,19 @@ module.exports = function(passport) {
 					return done(null, user); //user found, return that user
 				} else {
 					db.user.create({
-							twitterId: profile.id,
-							twitterToken: token,
-							twitterUsername: profile.username,
-							twitterDisplayName: profile.displayName
-						})
-						.then(function(newUser, created) {
-                    	    if (!newUser) {
-                    	        return done(null, false);
-                    	    }
-                    	    if (newUser) {
-                    	        return done(null, newUser);
-                    	    }
-                    	});
+						twitterId: profile.id,
+						twitterToken: token,
+						twitterUsername: profile.username,
+						twitterDisplayName: profile.displayName
+					})
+					.then(function(newUser, created) {
+                        if (!newUser) {
+                            return done(null, false);
+                        }
+                        if (newUser) {
+                            return done(null, newUser);
+                        }
+                    });
 				}
 			});
 		});
