@@ -1,6 +1,7 @@
 var db = require('../models');
 var passport = require('passport');
 var path = require('path');
+var axios = require('axios');
 module.exports = function(app, passport) {
 	
 
@@ -40,6 +41,8 @@ module.exports = function(app, passport) {
 	// ============= PROFILE SECTION =============
 	// protected so you have to be logged in to visit
 	// route middleware will verify this (the isLoggedIn function)
+
+	// this version for using EJS as view engine
 	// app.get('/profile', isLoggedIn, function(req, res) {
 	// 	res.render('profile.ejs', {
 	// 		user: req.user //get the user from session and pass to template
@@ -92,6 +95,10 @@ module.exports = function(app, passport) {
 	app.get('/logout', function(req, res) {
 		req.logout();
 		res.redirect('/');
+		// recommended implementation from stack overflow:
+		// req.session.destroy(function (err) {
+  		// 	res.redirect('/'); //Inside a callback… bulletproof!
+  		// });
 	});
 
 	// ============ JERK =============
