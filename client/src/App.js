@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Login from './Login.js';
-import Signup from './Signup.js';
-import Profile  from './Profile.js';
+import SignupPage from './Signup.js';
+import ProfilePage  from './Profile.js';
 import Home from './Home.js';
 import MyFeeds  from './MyFeeds.js';
 import MyDiscussions from './MyDiscussions.js';
@@ -15,24 +15,31 @@ import {
 import './App.css';
 
 class App extends Component {
-  state = {
+  constructor(props){
+    super(props);
+    this.state={
       user: {yubsy:'yubsy'}
     }
-  
-  componentDidMount(){
-    this.getUser()
+    this.getUser=this.getUser.bind(this);
   }
 
-  getUser = () => {
-    axios.get('/jerk')
-      .then((response) => {
-        this.setState({
-          user:response.data
-        })
+  getUser(email,password){
+    axios({
+      method: 'post',
+      url: '/login',
+      data: {
+        email: email,
+        password: password
+      }
+    })
+    .then((response) => {
+      this.setState({
+        user: response.data
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
   render() {
@@ -44,16 +51,16 @@ class App extends Component {
           <ul>
             <li><Link to={"/"}>Home</Link></li>
             <li><Link to={"/Login"}>Login</Link></li>
-            <li><Link to={"/Signup"}>Signup</Link></li>
-            <li><Link to={"/Profile"}>Profile</Link></li>
+            <li><Link to={"/SignupPage"}>Signup</Link></li>
+            <li><Link to={"/ProfilePage"}>Profile</Link></li>
             <li><Link to={"/MyFeeds"}>MyFeeds</Link></li>
             <li><Link to={"/MyDiscussions"}>MyDiscussions</Link></li>
           </ul>
           <div className="mainWrapper container">
             <Route exact path={"/"} component={Home}/>
-            <Route path={"/Login"} component={Login}/>
-            <Route path={"/Signup"} component={Signup}/>
-            <Route path={"/Profile"} component={Profile}/>
+            <Route path={"/Login"} render={(props) => <Login getUser={this.getUser} />} />
+            <Route path={"/SignupPage"} component={SignupPage}/>
+            <Route path={"/ProfilePage"} component={ProfilePage}/>
             <Route path={"/MyFeeds"} component={MyFeeds}/> 
             <Route path={"/MyDiscussions"} component={MyDiscussions}/>  
           </div>
