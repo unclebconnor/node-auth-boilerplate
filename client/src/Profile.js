@@ -2,8 +2,23 @@ import React, { Component } from 'react';
 import './App.css';
 
 class Profile extends Component {
+  constructor(props){
+    super(props);
+    this.state={
+      userId:""
+    }
+  }
+
+  componentDidMount(){
+    this.setState({
+      userId: this.props.userId
+    })
+  }
 
   render() {
+    console.log('profile state', this.state)
+    console.log('profile props', this.props)
+
     return (
       <div className="container">
         <div className="page-header text-center">
@@ -16,9 +31,8 @@ class Profile extends Component {
             <div className="well">
               <h3><span className="fa fa-user"></span> Local</h3>
                 <p>
-                  {/*<strong>id</strong>: <%= user.id %><br>
-                  <strong>email</strong>: <%= user.email %><br>
-                  <strong>password</strong>: <%= user.password %>*/}
+                  <strong>id</strong>: {this.state.userId}
+                  
                 </p>
             </div>
           </div>
