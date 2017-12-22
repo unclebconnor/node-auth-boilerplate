@@ -28,7 +28,6 @@ class Login extends Component {
     }
 
     render() {
-    console.log(this.state)
         return (
             <div className="container">
                 <div className="col-sm-6 col-sm-offset-3">

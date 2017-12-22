@@ -33,6 +33,7 @@ class App extends Component {
       }
     })
     .then((response) => {
+      console.log('response',response)
       this.setState({
         user: response.data
       })
@@ -43,7 +44,7 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state)
+    console.log("app state",this.state)
     return (
       <Router>
         <div className="container">
@@ -55,6 +56,7 @@ class App extends Component {
             <li><Link to={"/ProfilePage"}>Profile</Link></li>
             <li><Link to={"/MyFeeds"}>MyFeeds</Link></li>
             <li><Link to={"/MyDiscussions"}>MyDiscussions</Link></li>
+            <li><a href={"/logout"}>Logout</a></li>
           </ul>
           <div className="mainWrapper container">
             <Route exact path={"/"} component={Home}/>
@@ -62,7 +64,8 @@ class App extends Component {
             <Route path={"/SignupPage"} component={SignupPage}/>
             <Route path={"/ProfilePage"} component={ProfilePage}/>
             <Route path={"/MyFeeds"} component={MyFeeds}/> 
-            <Route path={"/MyDiscussions"} component={MyDiscussions}/>  
+            <Route path={"/MyDiscussions"} component={MyDiscussions}/>
+            <Route path={"/logout"} component={Home}/>  
           </div>
         </div>
       </Router>
