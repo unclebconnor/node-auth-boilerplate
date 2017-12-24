@@ -11,7 +11,6 @@ import {
   Route,
   Link
 } from 'react-router-dom';
-
 import './App.css';
 
 class App extends Component {
@@ -81,27 +80,26 @@ class App extends Component {
     console.log("app state",this.state)
     return (
       <Router>
-        <div className="container">
-          <p>THIS SHIT IS CONNECTED NOW YERRRRR</p>
-          <ul>
-            <li><Link to={"/"}>Home</Link></li>
-            <li><Link to={"/Login"}>Login</Link></li>
-            <li><Link to={"/SignupPage"}>Signup</Link></li>
-            <li><Link to={"/"} onClick={(e) => this.clearUser(e)}>Logout</Link></li>
-            <li><Link to={"/ProfilePage"}>Profile</Link></li>
-            <li><Link to={"/MyFeeds"}>MyFeeds</Link></li>
-            <li><Link to={"/MyDiscussions"}>MyDiscussions</Link></li>
-            
+        <div className="container-fluid">
+          <header>
+            <div className="inline-block">newReader</div>
+          </header>
+          <ul className="horizontalNav">
+            <li className="inline-block"><Link to={"/Login"}>Login</Link></li>
+            <li className="inline-block"><Link to={"/Signup"}>Signup</Link></li>
+            <li className="inline-block"><Link to={"/"} onClick={(e) => this.clearUser(e)}>Logout</Link></li>
+            <li className="inline-block"><Link to={"/"}>Home</Link></li>
+            <li className="inline-block"><Link to={"/Profile"}>Profile</Link></li>
+            <li className="inline-block"><Link to={"/MyFeeds"}>MyFeeds</Link></li>
+            <li className="inline-block"><Link to={"/MyDiscussions"}>MyDiscussions</Link></li>
           </ul>
           <div className="mainWrapper container">
             <Route exact path={"/"} component={Home}/>
             <Route path={"/Login"} render={(props) => <Login getUser={this.getUser} />} />
-            <Route path={"/SignupPage"} render={(props) => <Signup getUserSignup={this.getUserSignup} />}/>
-            <Route path={"/ProfilePage"} render={(props) => <Profile userId={this.state.userId} />} />
+            <Route path={"/Signup"} render={(props) => <Signup getUserSignup={this.getUserSignup} />}/>
+            <Route path={"/Profile"} render={(props) => <Profile userId={this.state.userId} />} />
             <Route path={"/MyFeeds"} component={MyFeeds}/> 
             <Route path={"/MyDiscussions"} component={MyDiscussions}/>
-            
- 
           </div>
         </div>
       </Router>
