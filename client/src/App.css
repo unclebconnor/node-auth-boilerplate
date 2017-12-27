@@ -1,6 +1,6 @@
 header {
-  height: 50px;
-  background-color: lightblue;
+  height: 60px;
+  border-bottom: 1px inset lightgray;
   display: flex;
   align-items: center;
   text-align: center;
@@ -12,6 +12,11 @@ header {
   display: flex;
   justify-content: space-around;
 
+}
+
+.hundredWide {
+  width: 100px;
+  text-align: center;
 }
 
 .inline-block {
