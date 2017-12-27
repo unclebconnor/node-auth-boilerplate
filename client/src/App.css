@@ -3,7 +3,6 @@ header {
   border-bottom: 1px inset lightgray;
   display: flex;
   align-items: center;
-  text-align: center;
 }
 
 .horizontalNav {
@@ -21,4 +20,12 @@ header {
 
 .inline-block {
   display: inline-block;
+}
+
+.block {
+  display: block;
+}
+
+.center {
+  text-align: center;
 }

@@ -77,7 +77,7 @@ class App extends Component {
     console.log("app state",this.state)
     return (
       <Router>
-        <div className="container-fluid">
+        <div>
           <header>
             <div className="hundredWide"><Link to={"/"}>Logo/Home</Link></div>
             <div className="hundredWide"><Link to={"/Auth"}>Login/Signup</Link></div>

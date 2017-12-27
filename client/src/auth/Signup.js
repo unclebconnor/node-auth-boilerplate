@@ -30,41 +30,44 @@ class Signup extends Component {
     render() {
       	return (
             <div className="container">
-                <div className="col-sm-6 col-sm-offset-3">
-                    <h1><span className="fa fa-sign-in"></span> Sign Up</h1>
+                <h1><span className="fa fa-sign-in"></span> Sign Up</h1>
                     {/* show any messages that come back with authentication */}
                     {/* ADD ALERTS HERE */}
     
-                    {/* LOGIN FORM */}
-                    <form>
-                        <div className="form-group">
-                            <label>Email</label>
+                {/* LOGIN FORM */}
+                <form>
+                    <div className="field">
+                        <label className="label">Email</label>
+                        <div className="control">
                             <input 
                                 type="text" 
-                                className="form-control" 
+                                className="input" 
                                 name="email"
                                 onChange={(e) => this.handleChangeEmail(e)}
                             />
                         </div>
-                        <div className="form-group">
-                            <label>Password</label>
+                    </div>
+                    <div className="field">
+                        <label className="label">Password</label>
+                        <div className="control">
                             <input 
                                 type="password" 
-                                className="form-control" 
+                                className="input" 
                                 name="password"
                                 onChange={(e) => this.handleChangePassword(e)}
                             />
                         </div>
-                        <button 
-                            type="submit" 
-                            className="btn btn-warning btn-lg"
-                            onClick={(e) => this.handleSubmit(e)}
-                        >Login</button>
-                    </form>
-                    <hr/>
-                    <p>Need an account? <a href="/signup">Signup</a></p>
-                    <p>Or go <a href="/">home</a>.</p>
-                </div>
+                    </div>
+                    <div className="field">
+                        <div className="control">
+                            <button 
+                                type="submit" 
+                                className="button"
+                                onClick={(e) => this.handleSubmit(e)}
+                            >Login</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         )
     }
