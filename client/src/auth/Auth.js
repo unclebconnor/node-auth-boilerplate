@@ -40,14 +40,16 @@ class Auth extends Component {
 					</div>
 					<div className="column is-4">
     	    			<Login getUser={this.props.getUser}/>
+    	    			<p>Need an account? <a onClick={(e) => this.openModal()}>Sign Up</a></p>
     	    		</div>
     	    	</div>
     	    </section>
-    	    <p>Need an account? <a onClick={(e) => this.openModal()}>Sign Up</a></p>
 			<div id="signupModal" className="modal">
 				<div className="modal-background"></div>
-				<div className="modal-content">
-					<Signup getUserSignup={this.props.getUserSignup}/>
+				<div class="modal-card">
+					<section class="modal-card-body">
+						<Signup getUserSignup={this.props.getUserSignup}/>
+					</section>
 				</div>
 				<button 
 					className="modal-close is-large" 

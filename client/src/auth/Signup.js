@@ -64,7 +64,7 @@ class Signup extends Component {
                                 type="submit" 
                                 className="button"
                                 onClick={(e) => this.handleSubmit(e)}
-                            >Login</button>
+                            >Create Account</button>
                         </div>
                     </div>
                 </form>

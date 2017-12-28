@@ -16,19 +16,16 @@ class Profile extends Component {
   }
 
   render() {
-    console.log('profile state', this.state)
-    console.log('profile props', this.props)
 
     return (
       <div className="container">
-        <div className="page-header text-center">
+        <div className="is-size-3 center">
           <h1><span className="fa fa-anchor"></span> Profile Page</h1>
-          <a href="/logout" className="btn btn-default btn-sm">Logout</a>
         </div>
-        <div className="row">
+        <div className="columns">
           {/* LOCAL INFORMATION */}
-          <div className="col-sm-6">
-            <div className="well">
+          <div className="column is-6">
+            <div className="box">
               <h3><span className="fa fa-user"></span> Local</h3>
                 <p>
                   <strong>id</strong>: {this.state.userId}
@@ -37,8 +34,8 @@ class Profile extends Component {
             </div>
           </div>
           {/* FACEBOOK INFORMATION */}
-          <div className="col-sm-6">
-            <div className="well">
+          <div className="column is-6">
+            <div className="box">
               <h3 className="text-primary"><span className="fa fa-facebook"></span> Facebook</h3>
               <p>
                     {/*<strong>facebook id</strong>: <%= user.facebookId %><br>
@@ -49,10 +46,10 @@ class Profile extends Component {
             </div>
           </div>
         </div>
-        <div className="row">
+        <div className="columns">
           {/* TWITTER INFORMATION */}
-          <div className="col-sm-6">
-            <div className="well">
+          <div className="column is-6">
+            <div className="box">
               <h3 className="text-info"><span className="fa fa-twitter"></span> Twitter</h3>
               <p>
                 {/*<strong>id</strong>: <%= user.twitterId %><br>
@@ -63,8 +60,8 @@ class Profile extends Component {
             </div>
           </div>
           {/*  GOOGLE INFORMATION */}
-          <div className="col-sm-6">
-            <div className="well">
+          <div className="column is-6">
+            <div className="box">
               <h3 className="text-danger"><span className="fa fa-google-plus"></span> Google</h3>
               <p>
                   {/*<strong>id</strong>: <%= user.googleId %><br>
