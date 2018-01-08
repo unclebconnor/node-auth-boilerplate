@@ -14,7 +14,8 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state={
-      userId: ""
+      userId: "",
+      token: ""
     }
     this.getUser=this.getUser.bind(this);
     this.getUserSignup=this.getUserSignup.bind(this);
@@ -36,9 +37,12 @@ class App extends Component {
       }
     })
     .then((response) => {
-      localStorage.userId = response.data.id
+      console.log(response)
+      localStorage.userId = response.data.user.id
+      localStorage.token = response.data.token
       this.setState({
-        userId: localStorage.userId
+        userId: localStorage.userId,
+        token: localStorage.token
       })        
     })
     .catch((error) => {
@@ -69,7 +73,8 @@ class App extends Component {
   clearUser(){
     localStorage.clear()      
     this.setState({
-      userId: {}
+      userId: '',
+      token:''
     })
   }
 

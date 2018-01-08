@@ -2,20 +2,29 @@ var db = require('../models');
 var passport = require('passport');
 var path = require('path');
 var axios = require('axios');
+var expressJWT = require('express-jwt');
+var jwt = require('jsonwebtoken');
+
+var secret = 'shhhyojeezitsasecret';
 
 module.exports = function(app, passport) {
-	
+
+	// ============= ADDITIONAL ROUTE FILES =============
+	// ==================================================
+	app.use('/test',require('./test'));
+
+
+	// ============= AUTH ROUTES =============
+	// =======================================
 
 	// ============= HOME PAGE (with login links) =============
 	app.get('/', function(req, res){
-		res.render('index.ejs'); //load the index.ejs file
+		res.send('aloha'); //not really being used b/c react
 	});
 
 	// ============= LOGIN =============
-	// show the login form
 	app.get('/login', function(req, res) {
-		// render the page and pass in flash if it exists
-		res.render('login.ejs', {message: req.flash('loginMessage') });
+		res.send('aloha');
 	});
 
     app.post('/login', function(req, res, next) {
@@ -24,8 +33,12 @@ module.exports = function(app, passport) {
 	    // FIX THIS...RETURN "THAT COMBINATION OF CREDENTIALS DOESN'T EXIST"
 	    // if (!user) { return res.redirect('/login'); }
 	    req.logIn(user, function(err) {
-	      if (err) { return next(err); }
-	      return res.send(user);
+	    	if (err) { return next(err); }
+	      	
+	      	var token = jwt.sign(user.dataValues, secret, {
+        		expiresIn: 60 * 60 * 24 // expires in 24 hours
+      		});
+	      	return res.send({user: user, token: token});
 	    });
 	  })(req, res, next);
 	});
@@ -34,8 +47,7 @@ module.exports = function(app, passport) {
 	// ============= SIGNUP =============
 	// show the signup form
 	app.get('/signup', function(req, res){
-		//render the page and pass in flash if it exists
-		res.render('signup.ejs', {message: req.flash('signupMessage') });
+		res.send('aloha');
 	});
 
 
@@ -45,8 +57,12 @@ module.exports = function(app, passport) {
 	    // FIX THIS...IF USER EXISTS RETURN MESSAGE
 	    // if (!user) { return res.redirect('/login'); }
 	    req.logIn(user, function(err) {
-	      if (err) { return next(err); }
-	      return res.send(user);
+	      	if (err) { return next(err); }
+	      	
+	      	var token = jwt.sign(user.dataValues, secret, {
+        		expiresIn: 60 * 60 * 24 // expires in 24 hours
+      		});
+	      	return res.send({user: user, token: token});
 	    });
 	  })(req, res, next);
 	});
