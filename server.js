@@ -18,13 +18,17 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 require('./config/passport')(passport);
 
+// set up router to separate routes
+// var auth = require('./routes/auth');
+
 // set up express app
 app.use(morgan('dev')); //logs requests to the console
 app.use(cookieParser()); //read cookies (needed for auth)
 app.use(bodyParser()); //get info from html forms
 
-// replace with react view engine: https://www.npmjs.com/package/react-view-engine
-app.set('view engine','ejs'); // set up ejs for templating
+// routes part deux
+// app.use('/auth', auth);
+
 
 // required for passport
 app.use(session({secret: 'shhhyojeezitsasecret'})); //worst ever secret

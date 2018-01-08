@@ -46,8 +46,8 @@ class Auth extends Component {
     	    </section>
 			<div id="signupModal" className="modal">
 				<div className="modal-background"></div>
-				<div class="modal-card">
-					<section class="modal-card-body">
+				<div className="modal-card">
+					<section className="modal-card-body">
 						<Signup getUserSignup={this.props.getUserSignup}/>
 					</section>
 				</div>
