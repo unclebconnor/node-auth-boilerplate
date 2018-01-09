@@ -3,7 +3,7 @@ import '../App.css';
 import Login from './Login.js';
 import Signup from './Signup.js';
 
-class Auth extends Component {
+class AuthMain extends Component {
 	constructor(props){
 		super(props);
 		this.state={
@@ -12,13 +12,11 @@ class Auth extends Component {
 	}
 
 	openModal(){
-		document.getElementById('signupModal').classList.add('is-active') //not working yet
-		
+		document.getElementById('signupModal').classList.add('is-active')
 	}
 
 	closeModal(){
-		document.getElementById('signupModal').classList.remove('is-active') //not working yet
-		
+		document.getElementById('signupModal').classList.remove('is-active')
 	}
 
   	render() {
@@ -28,6 +26,7 @@ class Auth extends Component {
     	    <section>
     	    	<div className="columns">
     	    		<div className="column is-4 is-offset-2 center">
+    	    			<div>*These are temporarily disabled</div>
 						<button className="button is-large is-link inline-block">
 							<span className="fa fa-facebook"> Log in with Facebook</span>
 						</button>
@@ -62,4 +61,4 @@ class Auth extends Component {
 	}
 }
 
-export default Auth;
+export default AuthMain;

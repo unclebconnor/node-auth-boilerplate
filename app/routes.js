@@ -43,6 +43,27 @@ module.exports = function(app, passport) {
 	  })(req, res, next);
 	});
 
+	// ============= REFRESH =============
+	app.get('/me/from/token', function(req, res, next) {
+		res.send('aloha');
+	})
+
+	app.post('/me/from/token', function(req, res, next) {
+	  	// check header or url parameters or post parameters for token
+	  	var token = req.body.token;
+	  	if (!token) {
+	    	return res.status(401).json({message: 'Must pass token'});
+	  	}
+	
+	  	// get current user from token
+	  	jwt.verify(token, secret, function(err, user) {
+	    	req.logIn(user, function(err) {
+	    		if (err) { return next(err); }
+	      		return res.send({user: user, token: token});
+	    	});
+	  	});
+	});
+
 
 	// ============= SIGNUP =============
 	// show the signup form
@@ -67,25 +88,9 @@ module.exports = function(app, passport) {
 	  })(req, res, next);
 	});
 
-	// ============= PROFILE SECTION =============
-	// protected so you have to be logged in to visit
-	// route middleware will verify this (the isLoggedIn function)
-
-	// this version for using EJS as view engine
-	// app.get('/profile', isLoggedIn, function(req, res) {
-	// 	res.render('profile.ejs', {
-	// 		user: req.user //get the user from session and pass to template
-	// 	});
-	// });
-
-	// app.get('/profile', isLoggedIn, function(req, res) {
-	// 	res.send('profile.ejs', {
-	// 		user: req.user //get the user from session and pass to template
-	// 	});
-	// });
 
 	// ============= FACEBOOK =============
-	app.get('/auth/facebook', passport.authenticate('facebook', { 
+ 	app.get('/auth/facebook', passport.authenticate('facebook', { 
       scope : ['public_profile', 'email']
     }));
 
@@ -96,6 +101,12 @@ module.exports = function(app, passport) {
             failureRedirect : '/'
         })
     );
+
+    // app.get('/auth/facebook/callback',
+    //     passport.authenticate('facebook', function(req,res,next){
+    //     	console.log('BOO HISS')
+    //     })
+    // );
 
     // ============= TWITTER =============
     app.get('/auth/twitter', passport.authenticate('twitter'));
