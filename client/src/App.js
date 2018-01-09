@@ -6,7 +6,9 @@ import Home from './Home.js';
 import {
   BrowserRouter as Router,
   Route,
-  Link
+  Link,
+  Redirect,
+  Switch
 } from 'react-router-dom';
 import './App.css';
 
@@ -130,13 +132,14 @@ class App extends Component {
         </header>
 
       bodyStuff =
-        <div className="mainWrapper container">
+        <Switch className="mainWrapper container">
           <Route exact path={"/"} component={Home}/>
           <Route 
             path={"/AuthMain"} 
             render={(props) => <AuthMain getUser={this.getUser} getUserSignup={this.getUserSignup} getUserFacebook={this.getUserFacebook}/>} 
           />
-        </div>
+          <Redirect to={'/'} />
+        </Switch>
     } else { //if logged in
       headerStuff = 
         <header>
@@ -146,10 +149,11 @@ class App extends Component {
         </header>
 
       bodyStuff =
-        <div className="mainWrapper container">
+        <Switch className="mainWrapper container">
           <Route exact path={"/"} component={Home}/>
           <Route path={"/Profile"} render={(props) => <Profile userId={this.state.userId} />} />
-        </div>
+          <Redirect to={'/Profile'} />
+        </Switch>
     }
 
     return (
