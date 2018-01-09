@@ -5,7 +5,7 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var db = require('../models'); // load user model
-var configAuth = require('./auth'); // load the auth variables
+require('dotenv').config()
 
 //expose the function to the app by using module.exports
 module.exports = function(passport) {
@@ -30,9 +30,9 @@ module.exports = function(passport) {
 	// ============= GOOGLE =============
 	passport.use(new GoogleStrategy({
 
-        clientID        : configAuth.googleAuth.clientID,
-        clientSecret    : configAuth.googleAuth.clientSecret,
-        callbackURL     : configAuth.googleAuth.callbackURL,
+        clientID        : process.env.GOOGLE_CLIENT_ID,
+        clientSecret    : process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL     : process.env.GOOGLE_CALLBACK_URL,
 
     },
     function(token, refreshToken, profile, done) {
@@ -72,9 +72,9 @@ module.exports = function(passport) {
 	// ============= TWITTER =============
 
 	passport.use(new TwitterStrategy({
-		consumerKey     : configAuth.twitterAuth.consumerKey,
-        consumerSecret  : configAuth.twitterAuth.consumerSecret,
-        callbackURL     : configAuth.twitterAuth.callbackURL
+		consumerKey     : process.env.TWITTER_CONSUMER_KEY,
+        consumerSecret  : process.env.TWITTER_CONSUMER_SECRET,
+        callbackURL     : process.env.TWITTER_CALLBACK_URL
 	},
 	function(token, tokenSecret, profile, done){
 		// asynchronous
@@ -108,9 +108,9 @@ module.exports = function(passport) {
 
 	passport.use(new FacebookStrategy({
 		// pull in our app id and secret from our auth.js file
-        clientID        : configAuth.facebookAuth.clientID,
-        clientSecret    : configAuth.facebookAuth.clientSecret,
-        callbackURL     : configAuth.facebookAuth.callbackURL
+        clientID        : process.env.FB_CLIENT_ID,
+        clientSecret    : process.env.FB_CLIENT_SECRET,
+        callbackURL     : process.env.FB_CALLBACK_URL
 	},
 
 		// facebook will send back the token and profile

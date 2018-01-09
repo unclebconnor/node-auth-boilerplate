@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import AuthMain from './auth/AuthMain';
 import Profile  from './Profile.js';
+import ReaderMain  from './reader/ReaderMain.js';
 import Home from './Home.js';
 import {
   BrowserRouter as Router,
@@ -146,12 +147,14 @@ class App extends Component {
             <div className="hundredWide"><Link to={"/"}>Logo/Home</Link></div>
             <div className="hundredWide"><Link to={"/"} onClick={(e) => this.clearUser(e)}>Logout</Link></div>
             <div className="hundredWide"><Link to={"/Profile"}>Profile</Link></div>
+            <div className="hundredWide"><Link to={"/ReaderMain"}>Reader</Link></div>
         </header>
 
       bodyStuff =
         <Switch className="mainWrapper container">
           <Route exact path={"/"} component={Home}/>
           <Route path={"/Profile"} render={(props) => <Profile userId={this.state.userId} />} />
+          <Route path={"/ReaderMain"} render={(props) => <ReaderMain userId={this.state.userId} />} />
           <Redirect to={'/Profile'} />
         </Switch>
     }

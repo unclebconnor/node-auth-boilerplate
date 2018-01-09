@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import '../App.css';
-import Login from './Login.js';
-import Signup from './Signup.js';
 
 class ReaderMain extends Component {
 	constructor(props){
@@ -15,7 +13,7 @@ class ReaderMain extends Component {
   	render() {
     	return (
     	  <div>
-
+    	  	Reader Main Page
     	  </div>
     	);
 	}
